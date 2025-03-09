@@ -2,13 +2,14 @@
 Читаю смс сообщения из модема
 """
 
+from operator import index
 import time
 
 import serial
 from serial import Serial
 
-PORT: str = "COM13"
-BAUDRATE = 9600
+PORT: str = "COM9"
+BAUDRATE = 115200
 
 modem: Serial = serial.Serial(PORT, BAUDRATE, timeout=1)
 
@@ -38,15 +39,36 @@ def read_all_sms():
 
 def check_modem_resp():
     return send_at_command("AT")
+
+def read_one_sms(sms_index):
+    """
+    чтение одной смс с индексом sms_index
+    """
+    send_at_command("AT+CMGF=1")
+    read_sms = "AT+CMGR=" + str(sms_index)
+    
+    return send_at_command(read_sms)
+
+
+def sms_delete(sms_index):
+    """
+    Удаляет смс с номером sms_index
+    """
+    send_at_command("AT+CMGF=1")
+    del_sms = "AT+CMGD=" + str(sms_index)
+    print("---")
+    print(send_at_command(del_sms))
+    print("---")
         
 
 def main():
     """
     Основное тело программы
     """
-    # print(check_modem_resp())
     print(read_all_sms())
-    # print(send_at_command("AT+CLAC")) # выводит все поддерживаемые команды
+    print(read_one_sms(3))
+    sms_delete(1)
+    print(read_all_sms())
     
 
 if __name__ == "__main__":
