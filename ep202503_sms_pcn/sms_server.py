@@ -46,6 +46,7 @@ async def read_sms(sms_index_: int):
     """
     Читает смс из модема с номером sms_index_
     """
+    await send_at_command("AT+CMGF=1")
     command_at = f"AT+CMGR={sms_index_}"
     readed_sms = await send_at_command(command_at, 1)
     return readed_sms
@@ -88,6 +89,7 @@ async def main():
     """
     основная асинхронная функция    
     """
+    await send_at_command('AT+CPMS="SM"', 1)
     await listen_to_modem()
 
 
