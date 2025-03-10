@@ -59,17 +59,25 @@ def sms_delete(sms_index):
     print("---")
     print(send_at_command(del_sms))
     print("---")
-        
+
+
+def sms_all_del():
+    print("Deleting SMS...")
+    send_at_command("AT+CMGF=1")
+    send_at_command('AT+CPMS="SM"')
+    print(send_at_command("AT+CMGD=1,4"))
+    print("***")
 
 def main():
     """
     Основное тело программы
     """
+    # print(read_all_sms())
+    # print(read_one_sms(3))
+    # sms_delete(1)
+    # print(read_all_sms())
+    # sms_all_del()
     print(read_all_sms())
-    print(read_one_sms(3))
-    sms_delete(1)
-    print(read_all_sms())
-    
 
 if __name__ == "__main__":
     main()
