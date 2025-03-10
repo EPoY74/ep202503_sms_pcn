@@ -112,6 +112,8 @@ async def listen_to_modem():
         if (modem is not None) and (modem.in_waiting >= 1):
             try:
                 response = modem.read_all()
+                # TODO Иногда подключение в норме, но модем ничего не передает. Стоит опрашивать состояние дополнительно
+
                 await asyncio.sleep(1)
 
             except serial.SerialException as err:
@@ -162,8 +164,9 @@ while True:
     except serial.SerialException as err:
         print(f"Непредвиденная ошибка 2: {err}")
         print("Повторное подключение через 10 секунд...")
+        # TODO Повторно не подключается - нужно разобраться
         time.sleep(10)
-        continue
     finally:
         if modem:
             modem.close()
+            
